@@ -1,1 +1,1 @@
-var a = [123];
+import './main';
