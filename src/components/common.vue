@@ -1,6 +1,6 @@
 <template>
   <div class="commons">
-    zhang yan de code spliting loading.
+    zhang yan de code spliting loading. df dfzhangyan sdis sfds f 
   </div>
 </template>
 
@@ -13,6 +13,10 @@
 
 <script>
   export default {
-
+    data() {
+      return {
+        isChange: false
+      };
+    }
   }
 </script>

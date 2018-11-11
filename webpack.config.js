@@ -4,8 +4,10 @@ const { resolve } = require('./config/helper');
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //generate index.html file
 const CleanWebpackPlugin = require("clean-webpack-plugin"); //clean dist folder
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css文件
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+// const SpritesmithPlugin = require('webpack-spritesmith');
+// const spriteConfig = require('./config/sprites.config');
+// const sprite  = spriteConfig();
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
@@ -16,11 +18,15 @@ module.exports = {
   output: {
     filename: "[name].[hash].js",
     path: resolve("dist"),
-    chunkFilename: '[id].[hash].js'
+    chunkFilename: '[name].[hash].js'
   },
   mode: devMode ? "development" : 'production',
-  devtool: 'cheap-module-source-map',
+  // devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
+    },
     extensions: ['.js', '.vue', '.json', 'scss'],
     modules: [resolve('./public/images/'), 'node_modules'] //绝对路径的模块依赖优先查找地址
   },
@@ -33,6 +39,13 @@ module.exports = {
         options: {
           hotReload: devMode ? true : false
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
       },
       {
         test: /\.scss$/,
@@ -63,8 +76,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
-        exclude: /node_modules/,
+        test: /\.(eot|ttf|svg|woff|woff2|otf)$/,
         use: [{
             loader: "url-loader",
             options: {
@@ -73,6 +85,11 @@ module.exports = {
               outputPath: 'svg'
             }
         }]
+      },
+      {
+        test: /.svg$/,
+        loader: 'svg-inline-loader',
+        include: [resolve('svg')]
       }
     ]
   },
@@ -122,7 +139,26 @@ module.exports = {
       Vue: 'vue'
     }),
 
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),    
+    // new SpritesmithPlugin({
+    //   cwd: path.resolve(__dirname, 'product/sprite'),
+    //   glob: '*.png',
+    //   target: {
+    //     image: path.resolve(__dirname, 'dist/sprites/product/sprite.png'),
+    //     css: path.resolve(__dirname, 'dist/css/product/sprite.css'),
+    //   },
+    //   retina: '@2x'
+    // }),
+
+    // new SpritesmithPlugin({
+    //   cwd: path.resolve(__dirname, 'account/sprite'),
+    //   glob: '*.png',
+    //   target: {
+    //     image: path.resolve(__dirname, 'dist/sprites/account/sprite.png'),
+    //     css: path.resolve(__dirname, 'dist/css/account/sprite.css'),
+    //   },
+    //   retina: '@2x'
+    // })
   ],
 
   devServer: {
