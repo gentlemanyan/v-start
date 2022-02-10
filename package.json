@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "element-ui": "^2.4.9",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.0",
     "svg-inline-loader": "^0.8.0",
     "vue": "^2.5.16",
     "webpack-spritesmith": "^0.5.3"
